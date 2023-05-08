@@ -328,7 +328,6 @@ GameObject:
   m_Component:
   - component: {fileID: 679435802}
   - component: {fileID: 679435801}
-  - component: {fileID: 679435803}
   m_Layer: 0
   m_Name: 'World manager '
   m_TagString: Untagged
@@ -348,6 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cec5c980d328fe4cb5b67605451e6fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GenerateArenaScirpt: {fileID: 0}
   Platform: {fileID: 265250650}
 --- !u!4 &679435802
 Transform:
@@ -364,38 +364,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &679435803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 679435800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3aaccc26476c824f99d8670603832c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WallMap1: {fileID: 1543605676}
-  WallMap2: {fileID: 0}
-  WallTile: {fileID: 11400000, guid: 26ae0874b54f8eb48954e3ac69745bdc, type: 2}
-  LeftWallGeneration: []
-  RightWallGeneration: []
-  EndPoints:
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  GenerationDirections:
-  - {x: 1, y: 0}
-  - {x: 0, y: 1}
-  - {x: -1, y: 0}
-  RightStartPoint: {x: 0, y: 0}
-  LeftStartPoint: {x: 0, y: 0}
-  ChosenDirection: 0
-  VisableCells: 0
-  CameraHeightToCells: 0
-  CameraWidthToCells: 0
-  WallGenNumber: 50
-  CameraRef: {fileID: 519420031}
 --- !u!1 &682238983
 GameObject:
   m_ObjectHideFlags: 0
