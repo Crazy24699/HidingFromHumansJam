@@ -10,7 +10,7 @@ public class WorldManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenerateArenaScirpt.ExecutionOrder();
+
         Platform.transform.position = new Vector2(0, 0);
     }
 
