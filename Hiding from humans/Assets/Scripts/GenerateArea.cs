@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.Timeline;
 using UnityEngine.UIElements;
 
 
@@ -13,6 +14,7 @@ public class GenerateArea : MonoBehaviour
 {
     public Tilemap AreaMap;
     public TileBase WallTiles;
+    public TileBase VirusTiles;
 
     [SerializeField]protected int MinWidth;
     [SerializeField]protected int MaxWidth;
@@ -22,10 +24,12 @@ public class GenerateArea : MonoBehaviour
 
     public int AreaWidth;
 
+    public int CurrentVirusLevel;
+
     protected int TotalUnitsOver = 5;       //How many units the program is allowed to go over on the x axis 
     public int CurrentUnitsOver;
 
-    protected List<Vector2Int> Directions = new List<Vector2Int>()
+    [SerializeField]protected List<Vector2Int> Directions = new List<Vector2Int>()
     {
         new Vector2Int(1,0),
         new Vector2Int(0,1),
@@ -44,7 +48,7 @@ public class GenerateArea : MonoBehaviour
     public HashSet<Vector2Int> Walls = new HashSet<Vector2Int>();
     public HashSet<Vector2Int> Floor = new HashSet<Vector2Int>();
 
-    public void Start()
+    public void AreaGenerationStart()
     {
         if (MinWidth == 0)
         {
@@ -54,12 +58,30 @@ public class GenerateArea : MonoBehaviour
         {
             MaxWidth = 50;
         }
+
         PaintTile(AreaMap, WallTiles, new Vector2Int(-40,0));
-        PaintTile(AreaMap, WallTiles, new Vector2Int(-20,0));
+        PaintTile(AreaMap, WallTiles, new Vector2Int(0,0));
         PaintTile(AreaMap, WallTiles, new Vector2Int(40,0));
+        PaintTile(AreaMap, WallTiles, new Vector2Int(40,Height));
 
         GenerateFloor();
         GenerateWallPositions();
+
+
+        List<Vector2Int> MatchingYCords = new List<Vector2Int>(Walls);
+
+        for (int y = 1; y < 6; y++)
+        {
+            List<Vector2Int> UseableVectors = new List<Vector2Int>();
+            UseableVectors.AddRange(MatchingYCords.FindAll(i => i.y == y));
+
+            int LeftValue = UseableVectors.Min(L => L.x);
+            int RightValue = UseableVectors.Max(R => R.x);
+
+            PaintTile(AreaMap, VirusTiles, new Vector2Int(RightValue, y));
+            PaintTile(AreaMap, VirusTiles, new Vector2Int(LeftValue, y));
+        }
+
     }
 
     public void PaintTile(Tilemap ArenaGrid, TileBase TileType, Vector2Int Position)
@@ -69,6 +91,7 @@ public class GenerateArea : MonoBehaviour
 
     }
 
+    //spawn platforms in either 6 or 7's
 
 
     public void GenerateFloor()
@@ -105,10 +128,41 @@ public class GenerateArea : MonoBehaviour
         }
     }
 
-    public bool ValidPosition()
+    public IEnumerator IncrimentVirus(int Level)
     {
+        //List<Vector2Int> MatchingYCords = new List<Vector2Int>();
+        //MatchingYCords = Walls.ToList();
 
-        return false;
+        for (int i = 0; i < 5; i++)
+        {
+            List<Vector2Int> WallsRef = new List<Vector2Int>(Walls);
+            List<Vector2Int> MatchingYCords = new List<Vector2Int>();
+
+
+            MatchingYCords = WallsRef.FindAll(i => i.y == CurrentVirusLevel);
+            int LeftValue = MatchingYCords.Min(L => L.x);
+            int RightValue = MatchingYCords.Max(R => R.x);
+
+            yield return new WaitForSeconds(0.1f);
+
+            int FillAmount = (Mathf.Abs(LeftValue) + Mathf.Abs(RightValue)+1);
+
+            Vector2Int StartCord = new Vector2Int(LeftValue-1, Level);
+            Vector2Int CurrentCord = StartCord ;
+
+            for (int y = 0; y < FillAmount; y++)
+            {
+                if (CurrentCord.x >= RightValue)
+                {
+                    break;
+                }
+
+                CurrentCord += Vector2Int.right;
+                PaintTile(AreaMap, VirusTiles, CurrentCord);
+            }
+            CurrentVirusLevel++;
+            Level++;
+        }
     }
 
     public bool TilePositionPossible(Vector2Int CurrentPosition, Vector2Int PossiblePosition, Vector2Int ChosenDirection, HashSet<Vector2Int> AllPositions)
@@ -155,11 +209,6 @@ public class GenerateArea : MonoBehaviour
 
         switch (YValue)
         {
-            //case -1:
-            //    BottomClear = PositionClear && (!AllPositions.Contains(new Vector2Int(PossiblePosition.x - 1, PossiblePosition.y - 1)) || !AllPositions.Contains(new Vector2Int(PossiblePosition.x + 1, PossiblePosition.y - 1)));
-            //    CanGenerateHere = BottomClear;
-            //    break;
-
             case 1:
                 TopClear = PositionClear && (!AllPositions.Contains(new Vector2Int(PossiblePosition.x - 1, PossiblePosition.y + 1)) && !AllPositions.Contains(new Vector2Int(PossiblePosition.x + 1, PossiblePosition.y + 1)));
                 CanGenerateHere = TopClear;
@@ -179,8 +228,8 @@ public class GenerateArea : MonoBehaviour
         Vector2Int NextPosition = Vector2Int.zero;
         HashSet<Vector2Int> StoredPositions = new HashSet<Vector2Int>();
         Vector2Int StartingPoint = Vector2Int.zero;
-
-        for (int y = 0; y < Height; y++)
+        Debug.Log(Height);
+        for (int y = 0; y < Height;)
         {
 
 
@@ -190,44 +239,95 @@ public class GenerateArea : MonoBehaviour
             }
 
             Vector2Int ChosenDirection = Directions[Random.Range(0, Directions.Count)];
-            
+            Vector2Int PossibleNewPosition = CurrentPosition + ChosenDirection;
+
+            if (TilePositionPossible(NextPosition, PossibleNewPosition, ChosenDirection, Walls))
+            {
+                NextPosition = PossibleNewPosition;
+
+                Walls.Add(NextPosition);
+                Walls.Add(new Vector2Int((NextPosition.x * -1)-1, NextPosition.y));
+
+                CurrentPosition = NextPosition;
+
+                if (CurrentPosition.x > AreaWidth || CurrentPosition.x < AreaWidth) 
+                {
+                    Debug.Log("Warning warning warning");
+                    CurrentUnitsOver = CurrentPosition.x - AreaWidth;
+                    switch (CurrentUnitsOver)
+                    {
+                        default:
+                        case 0:
+
+                            if(!Directions.Contains(new Vector2Int(-1, 0)))
+                            {
+                                Directions.Add(new Vector2Int(-1, 0));
+                            }
+                            if(!Directions.Contains(new Vector2Int(1, 0)))
+                            {
+                                Directions.Add(new Vector2Int(1, 0));
+                            }
+
+                            Debug.Log("Half wolf");
+                            break;
+
+                        case 2:
+                            //Directions.Remove(new Vector2Int(1, 0));
+                            if(!Directions.Contains(new Vector2Int(-1, 0)))
+                            {
+                                Directions.Add(new Vector2Int(-1, 0));
+                            }
+
+                            Debug.Log("Half awake");
+                            //Directions.Add(new Vector2Int(1, 0));
+                            break;
+
+                        case 5:
+                            Directions.Remove(new Vector2Int(1, 0));
+                            if (!Directions.Contains(new Vector2Int(-1, 0)))
+                            {
+                                Directions.Add(new Vector2Int(-1, 0));
+                            }
+
+                            Debug.Log("Half afraid");
+                            break;
+
+                        case -5:
+                            Directions.Remove((new Vector2Int(-1, 0)));
+                            if (!Directions.Contains(new Vector2Int(1, 0)))
+                            {
+                                Directions.Add(new Vector2Int(1, 0));
+                            }
+                            break;
+                    }
+                }
+
+                if (CurrentPosition.y < Height)
+                {
+                    Debug.Log("know me for what i am ");
+
+                    if (LastPosition.y <= CurrentPosition.y)
+                    {
+                        y--;
+                        Debug.Log("the same");
+                    }
+                }
+                else if(CurrentPosition.y >= Height)
+                {
+                    Debug.Log("die out");
+                    y = Height - 1;
+                }
+
+                
+                LastPosition = CurrentPosition;
+            }
 
             NextPosition = CurrentPosition + ChosenDirection;
-            CurrentPosition = NextPosition;
-            Walls.Add(NextPosition);
+
+
             //Walls.Add(new Vector2Int(-NextPosition.x, NextPosition.y));
-            Debug.Log(Walls.Count);
 
-            if (CurrentPosition.x > AreaWidth)
-            {
-                CurrentUnitsOver = CurrentPosition.x - AreaWidth;
-                switch (CurrentUnitsOver)
-                {
-                    default:
-                        case 0:
-                        Directions.Remove(new Vector2Int(-1, 0));
-                        Directions.Add(new Vector2Int(1, 0));
-                    break;
-
-                    case 2:
-                        //Directions.Remove(new Vector2Int(1, 0));
-                        Directions.Add(new Vector2Int(-1, 0));
-                        //Directions.Add(new Vector2Int(1, 0));
-                    break;
-
-                    case 5:
-                        Directions.Remove(new Vector2Int(-1, 0));
-                        Directions.Add(new Vector2Int(1, 0));
-                   break;
-                }
-            }
-
-            if(LastPosition.y==CurrentPosition.y)
-            {
-                y--;
-            }
             y++;
-            LastPosition = CurrentPosition;
         }
 
 
@@ -236,6 +336,7 @@ public class GenerateArea : MonoBehaviour
             PaintTile(AreaMap, WallTiles, Tile);
         }
 
+        Debug.Log(Walls.Count);
     }
 
 }
