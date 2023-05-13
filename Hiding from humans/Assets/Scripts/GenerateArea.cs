@@ -13,6 +13,8 @@ using UnityEngine.UIElements;
 public class GenerateArea : MonoBehaviour
 {
     public Tilemap AreaMap;
+    public Tilemap VirusMap;
+
     public TileBase WallTiles;
     public TileBase VirusTiles;
 
@@ -133,6 +135,8 @@ public class GenerateArea : MonoBehaviour
         //List<Vector2Int> MatchingYCords = new List<Vector2Int>();
         //MatchingYCords = Walls.ToList();
 
+        yield return new WaitForSeconds(3.5f);
+
         for (int i = 0; i < 5; i++)
         {
             List<Vector2Int> WallsRef = new List<Vector2Int>(Walls);
@@ -143,7 +147,7 @@ public class GenerateArea : MonoBehaviour
             int LeftValue = MatchingYCords.Min(L => L.x);
             int RightValue = MatchingYCords.Max(R => R.x);
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
 
             int FillAmount = (Mathf.Abs(LeftValue) + Mathf.Abs(RightValue)+1);
 
@@ -158,11 +162,12 @@ public class GenerateArea : MonoBehaviour
                 }
 
                 CurrentCord += Vector2Int.right;
-                PaintTile(AreaMap, VirusTiles, CurrentCord);
+                PaintTile(VirusMap, VirusTiles, CurrentCord);
             }
             CurrentVirusLevel++;
             Level++;
         }
+        StartCoroutine(IncrimentVirus(CurrentVirusLevel));
     }
 
     public bool TilePositionPossible(Vector2Int CurrentPosition, Vector2Int PossiblePosition, Vector2Int ChosenDirection, HashSet<Vector2Int> AllPositions)
@@ -337,6 +342,7 @@ public class GenerateArea : MonoBehaviour
         }
 
         Debug.Log(Walls.Count);
+
     }
 
 }

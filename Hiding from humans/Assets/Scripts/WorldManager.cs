@@ -18,11 +18,19 @@ public class WorldManager : MonoBehaviour
 
         GenerateArenaScirpt.AreaGenerationStart();
 
+        if(GenerateArenaScirpt.Walls.Count < 10)
+        {
+            GenerateArenaScirpt.AreaGenerationStart();
+            Debug.LogError("Had to re generate");
+        }
+
         PlatformScriptRef.PlatformStart();
 
         PlatformScriptRef.HandleSpawningLogic();
 
-        InvokeRepeating("IncreaseVirusLevel", 5, 1);
+        IncreaseVirusLevel();
+
+        //InvokeRepeating("IncreaseVirusLevel", 5, 1);
     }
 
     // Update is called once per frame
@@ -35,4 +43,6 @@ public class WorldManager : MonoBehaviour
     {
         GenerateArenaScirpt.StartCoroutine(GenerateArenaScirpt.IncrimentVirus(GenerateArenaScirpt.CurrentVirusLevel));
     }
+
+   
 }
