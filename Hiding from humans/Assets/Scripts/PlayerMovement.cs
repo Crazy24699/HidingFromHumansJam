@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float JumpMultiplyer;
     public float JumpForce;
 
-    [HideInInspector]public int FacingDirection=1;
+    [HideInInspector]public int FacingDirection;
 
     public bool IsGrounded = false;
 
@@ -53,18 +53,25 @@ public class PlayerMovement : MonoBehaviour
 
     public void FLip()
     {
+        Vector3 LocalScale = transform.localScale;
+        
         switch (HorizontalMovement)
         {
-            case -1:
-                FacingDirection = -1;
+            default:
+                FacingDirection = Mathf.FloorToInt(LocalScale.x);
+                Debug.Log(FacingDirection);
                 break;
 
-            case 1:
-                FacingDirection = 1;
+            case < 0:
+                FacingDirection = Mathf.FloorToInt(LocalScale.x) * -1;
+                break;
+
+            case > 0:
+                FacingDirection = Mathf.FloorToInt(LocalScale.x) * 1;
                 break;
         }
 
-        Vector3 LocalScale = transform.localScale;
+
         LocalScale.x = FacingDirection;
         transform.localScale=LocalScale;
     }

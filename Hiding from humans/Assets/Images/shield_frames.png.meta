@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d7aa600009ae3d3468148871f4dc9178
+guid: d73a991b4c199cb488efac4e6f1a40bb
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -105,13 +105,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: character run animation_0
+      name: shield_frames_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 4
-        width: 26
-        height: 24
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -119,20 +119,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 004c0305ee56b694da0a3f9d0105b235
-      internalID: -183998481
+      spriteID: a9d509e8d5688b04cb400c819b7e4327
+      internalID: 1002118474
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: character run animation_1
+      name: shield_frames_1
       rect:
         serializedVersion: 2
-        x: 33
-        y: 4
-        width: 29
-        height: 25
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,20 +140,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0a9624dfb552d6040911a0afd14ce56b
-      internalID: -1616201730
+      spriteID: 145a6d46b7da81d4a9c0d73302de23f4
+      internalID: -944506508
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: character run animation_2
+      name: shield_frames_2
       rect:
         serializedVersion: 2
-        x: 63
-        y: 7
-        width: 31
-        height: 22
+        x: 64
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,8 +161,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4ac79e2abb2a9f643909522eab7ee2a1
-      internalID: -961410102
+      spriteID: 719e10174b646ea47b49ac8462a6c422
+      internalID: 2090054258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shield_frames_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 102028d085e56d34994387790ba83e63
+      internalID: 1808704408
       vertices: []
       indices: 
       edges: []
@@ -178,12 +199,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      character run animation_0: -183998481
-      character run animation_2: -961410102
-      character run animation_1: -1616201730
+      shield_frames_3: 1808704408
+      shield_frames_0: 1002118474
+      shield_frames_1: -944506508
+      shield_frames_2: 2090054258
   spritePackingTag: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 1
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
