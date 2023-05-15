@@ -11,6 +11,8 @@ public class PlatformScript : MonoBehaviour
 
     public GenerateArea GenerateAreaScript;
 
+    public WorldManager WorldManagerScript;
+
     public List<Vector2Int> WallCordinates = new List<Vector2Int>();
 
     public int BoundsHeight;
@@ -24,6 +26,8 @@ public class PlatformScript : MonoBehaviour
 
     public void PlatformStart()
     {
+        WorldManagerScript = GameObject.FindAnyObjectByType<WorldManager>();
+
         GenerateAreaScript = GameObject.FindObjectOfType<GenerateArea>();
         WallCordinates = new List<Vector2Int>(GenerateAreaScript.Walls);
         BoundsHeight = GenerateAreaScript.Height;
@@ -73,11 +77,11 @@ public class PlatformScript : MonoBehaviour
                     break;
 
                 case < 0:
-                    CurrentPlatformPosition = new Vector2Int(+ 9, LastPlatformPositon.y + 5);
+                    CurrentPlatformPosition = new Vector2Int(+ 9, LastPlatformPositon.y + 6);
                     break;
 
                 case > 0:
-                    CurrentPlatformPosition = new Vector2Int( - 9, LastPlatformPositon.y + 5);
+                    CurrentPlatformPosition = new Vector2Int( - 9, LastPlatformPositon.y + 6);
 
                     break;
             }
@@ -85,6 +89,7 @@ public class PlatformScript : MonoBehaviour
             PlatformList.Add(CurrentPlatformPosition);
             LastPlatformPositon = CurrentPlatformPosition;
         }
+        //WorldManagerScript.PlatformsInScene.AddRange(PlatformList);
     }
 
     public void GetEnclosingCells()
@@ -109,6 +114,7 @@ public class PlatformScript : MonoBehaviour
         PlatformRef = Instantiate(PlatformPrefab, Position.ConvertTo<Vector3>() + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
         PlatformRef.name = "Platform" + PlatformList.Count.ToString();
         PlatformRef.transform.localScale = new Vector3Int(5, 1, -10);
+        WorldManagerScript.PlatformsInScene.Add(PlatformRef);
 
     }
     

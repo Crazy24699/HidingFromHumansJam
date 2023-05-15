@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,12 +11,15 @@ public class WorldManager : MonoBehaviour
 
     public int CurrentLevel;
 
-    public GameObject Platform;
+    public GameObject EnemyPrefab;
+
+    public List<GameObject> EnemiesInScene;
+    public List<GameObject> PlatformsInScene = new List<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
-        Platform.transform.position = new Vector2(0, 0);
-
+        Application.targetFrameRate = 60;
         GenerateArenaScirpt.AreaGenerationStart();
 
         if(GenerateArenaScirpt.Walls.Count < 10)
@@ -28,8 +32,8 @@ public class WorldManager : MonoBehaviour
 
         PlatformScriptRef.HandleSpawningLogic();
 
-        IncreaseVirusLevel();
-
+        //IncreaseVirusLevel();
+        SpawnEnemies();
         //InvokeRepeating("IncreaseVirusLevel", 5, 1);
     }
 
@@ -37,6 +41,20 @@ public class WorldManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SpawnEnemies()
+    {
+        int Counter = 0;
+        foreach (var PlatformPoint in PlatformsInScene)
+        {
+            Counter++;
+            GameObject EnemyRef;
+            EnemyRef = Instantiate(EnemyPrefab, new Vector2(PlatformPoint.transform.position.x, PlatformPoint.transform.position.y + 2), Quaternion.identity);
+            EnemyRef.name = "Enemy" + Counter;
+
+
+        }
     }
 
     public void IncreaseVirusLevel()

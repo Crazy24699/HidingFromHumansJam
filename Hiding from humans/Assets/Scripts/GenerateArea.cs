@@ -70,19 +70,19 @@ public class GenerateArea : MonoBehaviour
         GenerateWallPositions();
 
 
-        List<Vector2Int> MatchingYCords = new List<Vector2Int>(Walls);
+        //List<Vector2Int> MatchingYCords = new List<Vector2Int>(Walls);
 
-        for (int y = 1; y < 6; y++)
-        {
-            List<Vector2Int> UseableVectors = new List<Vector2Int>();
-            UseableVectors.AddRange(MatchingYCords.FindAll(i => i.y == y));
+        //for (int y = 1; y < 6; y++)
+        //{
+        //    List<Vector2Int> UseableVectors = new List<Vector2Int>();
+        //    UseableVectors.AddRange(MatchingYCords.FindAll(i => i.y == y));
 
-            int LeftValue = UseableVectors.Min(L => L.x);
-            int RightValue = UseableVectors.Max(R => R.x);
+        //    int LeftValue = UseableVectors.Min(L => L.x);
+        //    int RightValue = UseableVectors.Max(R => R.x);
 
-            PaintTile(AreaMap, VirusTiles, new Vector2Int(RightValue, y));
-            PaintTile(AreaMap, VirusTiles, new Vector2Int(LeftValue, y));
-        }
+        //    PaintTile(AreaMap, VirusTiles, new Vector2Int(RightValue, y));
+        //    PaintTile(AreaMap, VirusTiles, new Vector2Int(LeftValue, y));
+        //}
 
     }
 
@@ -95,6 +95,22 @@ public class GenerateArea : MonoBehaviour
 
     //spawn platforms in either 6 or 7's
 
+    //Spawn a platform in specific numbers. Every 3-4 level platform if there is time for that
+
+    public void SpawnMidPoint()
+    {
+        List<Vector2Int> MatchingYCords = new List<Vector2Int>(Walls);
+
+
+        Vector2Int SpawnLocation = new Vector2Int(0, Height / 2);
+
+        List<Vector2Int> UseableVectors = new List<Vector2Int>();
+        //UseableVectors.AddRange(MatchingYCords.FindAll(i => i.y == y));
+
+        int LeftValue = UseableVectors.Min(L => L.x);
+        int RightValue = UseableVectors.Max(R => R.x);
+
+    }
 
     public void GenerateFloor()
     {
@@ -347,6 +363,6 @@ public class GenerateArea : MonoBehaviour
 
 }
 
-//the area that the player will be confined to is loaded onto 2 alternating parts
+//the area that the Player will be confined to is loaded onto 2 alternating parts
 //one part is active and while that part is active, the previouse part will be cleared
 //eg: if part 1 is active, part 2 will be cleared

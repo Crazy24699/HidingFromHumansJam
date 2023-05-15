@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D RB2D;
     public LayerMask GroundLayer;
     public Transform GroundPoint; 
+    public Animator PlayerAnimations;
 
     // Start is called before the first frame update
     void Start()
@@ -41,9 +43,13 @@ public class PlayerMovement : MonoBehaviour
     {
         IsGrounded=Physics2D.OverlapCircle(GroundPoint.transform.position, GroundRadius,GroundLayer);
 
-        HorizontalMovement = Input.GetAxisRaw("Horizontal");
-        RB2D.velocity = new Vector2(HorizontalMovement * MoveSpeed, RB2D.velocity.y);
+        HorizontalMovement = Input.GetAxisRaw("Horizontal") * MoveSpeed;
+        RB2D.velocity = new Vector2(HorizontalMovement, RB2D.velocity.y);
         FLip();
+
+        PlayerAnimations.SetFloat("Current Speed", Mathf.Abs(HorizontalMovement));
+
+
 
         if(IsGrounded && Input.GetKeyDown(KeyCode.Space))
         {
@@ -58,16 +64,20 @@ public class PlayerMovement : MonoBehaviour
         switch (HorizontalMovement)
         {
             default:
+            case 0:
                 FacingDirection = Mathf.FloorToInt(LocalScale.x);
                 Debug.Log(FacingDirection);
                 break;
 
             case < 0:
-                FacingDirection = Mathf.FloorToInt(LocalScale.x) * -1;
+                //FacingDirection = Mathf.FloorToInt(LocalScale.x) * -1;
+                FacingDirection = -2;
+                
                 break;
 
             case > 0:
-                FacingDirection = Mathf.FloorToInt(LocalScale.x) * 1;
+                //FacingDirection = Mathf.FloorToInt(LocalScale.x) * 1;
+                FacingDirection = 2;
                 break;
         }
 
