@@ -54,11 +54,11 @@ public class GenerateArea : MonoBehaviour
     {
         if (MinWidth == 0)
         {
-            MinWidth = 30;
+            MinWidth = 15;
         }
         if(MaxWidth == 0)
         {
-            MaxWidth = 50;
+            MaxWidth = 25;
         }
 
         PaintTile(AreaMap, WallTiles, new Vector2Int(-40,0));
@@ -183,7 +183,12 @@ public class GenerateArea : MonoBehaviour
             CurrentVirusLevel++;
             Level++;
         }
-        StartCoroutine(IncrimentVirus(CurrentVirusLevel));
+
+        if (CurrentVirusLevel < Height)
+        {
+            StartCoroutine(IncrimentVirus(CurrentVirusLevel));
+
+        }
     }
 
     public bool TilePositionPossible(Vector2Int CurrentPosition, Vector2Int PossiblePosition, Vector2Int ChosenDirection, HashSet<Vector2Int> AllPositions)

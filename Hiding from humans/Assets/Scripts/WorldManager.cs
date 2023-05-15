@@ -32,7 +32,7 @@ public class WorldManager : MonoBehaviour
 
         PlatformScriptRef.HandleSpawningLogic();
 
-        //IncreaseVirusLevel();
+        IncreaseVirusLevel();
         SpawnEnemies();
         //InvokeRepeating("IncreaseVirusLevel", 5, 1);
     }
