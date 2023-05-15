@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class mainMenu : MonoBehaviour
 {
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("Main Level");
+    }
+
     public void startDefault()
     {
         SceneManager.LoadScene("easyMode");
