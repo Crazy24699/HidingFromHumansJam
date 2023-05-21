@@ -35,6 +35,9 @@ public class WorldManager : MonoBehaviour
         IncreaseVirusLevel();
         SpawnEnemies();
         //InvokeRepeating("IncreaseVirusLevel", 5, 1);
+
+        GameObject Player = GameObject.FindGameObjectWithTag("Player");
+        Player.transform.position = new Vector2(0, 2.5f);
     }
 
     // Update is called once per frame

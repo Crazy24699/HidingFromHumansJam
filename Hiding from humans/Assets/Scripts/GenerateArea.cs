@@ -31,6 +31,8 @@ public class GenerateArea : MonoBehaviour
     protected int TotalUnitsOver = 5;       //How many units the program is allowed to go over on the x axis 
     public int CurrentUnitsOver;
 
+    public GameObject CPUEscapeRef;
+
     [SerializeField]protected List<Vector2Int> Directions = new List<Vector2Int>()
     {
         new Vector2Int(1,0),
@@ -363,6 +365,8 @@ public class GenerateArea : MonoBehaviour
         }
 
         Debug.Log(Walls.Count);
+
+        Instantiate(CPUEscapeRef, new Vector2(0, Height), Quaternion.identity);
 
     }
 

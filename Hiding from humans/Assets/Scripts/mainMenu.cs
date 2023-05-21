@@ -27,4 +27,8 @@ public class mainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("hardMode");
     }
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }

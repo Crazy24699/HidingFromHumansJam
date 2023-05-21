@@ -31,6 +31,7 @@ public class ShieldProjection : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
         }
+
         RB2D.velocity = new Vector2(Direction * 22, RB2D.velocity.y);
     }
 

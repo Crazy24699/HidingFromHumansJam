@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]public int FacingDirection;
 
     public bool IsGrounded = false;
+    private bool isPaused = false;
+
 
     public Rigidbody2D RB2D;
     public LayerMask GroundLayer;
@@ -37,6 +39,10 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         Move();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePause();
+        }
     }
 
     public void Move()
@@ -89,6 +95,34 @@ public class PlayerMovement : MonoBehaviour
     public void Jump()
     {
         RB2D.AddForce(new Vector2(0, JumpForce * JumpMultiplyer), ForceMode2D.Impulse);
+    }
+
+    private void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            PauseGame();
+        }
+        else
+        {
+            ResumeGame();
+        }
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f; // Set time scale to 0 to pause the game
+        Debug.Log("Game paused");
+        // Add any other pause-related actions or UI display here
+    }
+
+    private void ResumeGame()
+    {
+        Time.timeScale = 1f; // Set time scale back to 1 to resume the game
+        Debug.Log("Game resumed");
+        // Add any other resume-related actions or UI hiding here
     }
 
 }

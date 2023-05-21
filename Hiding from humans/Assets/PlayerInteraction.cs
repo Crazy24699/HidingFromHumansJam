@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.UIElements;
 using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
     public GameObject ShieldRef;
     private bool AttackReady = true;
-
+    public GameObject DeathScreen;
+    public GameObject WinScreen;
     public void Attack()
     {
         Instantiate(ShieldRef, new Vector2((this.transform.position.x + 1.5f) * (this.transform.lossyScale.x / this.transform.lossyScale.x), this.transform.position.y), Quaternion.identity);
@@ -28,12 +28,24 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (collision.collider.CompareTag("Virus"))
         {
-            Debug.Log("stop");
-            Time.timeScale = 0;
+            PlayerMovement PlayerMoveScript = GameObject.FindObjectOfType<PlayerMovement>();
+            PlayerMoveScript.PauseGame();
+            DeathScreen.SetActive(true);
+        }
+
+
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Escape"))
+        {
+            PlayerMovement PlayerMoveScript = GameObject.FindObjectOfType<PlayerMovement>();
+            PlayerMoveScript.PauseGame();
+            WinScreen.SetActive(true);
         }
     }
 
-    
     public IEnumerator AttackCooldown()
     {
         AttackReady = false;
